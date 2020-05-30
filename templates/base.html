@@ -4,16 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>License Watcher</title>
+    <link rel="icon" href="../static/pic/watcher.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../static/pic/watcher.png" type="image/x-icon">
     <script src="../static/js/jquery-3.5.1.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/semantic/dist/semantic.css">
     <script src="../static/semantic/dist/semantic.js"></script>
 </head>
 
+
+<head>
+    <div class="ui attached header menu inverted black large">
+        <div class="ui item ">
+            <h3 class="ui inverted header">License Watcher v0.1</h3>
+        </div>
+        <div class="ui button item animated">
+            <div class="visible content">Home</div>
+            <div class="hidden content"><i class="home icon"></i></div>
+        </div>
+        <div class="ui button item">Function 1</div>
+        <div class="ui button item">Function 2</div>
+        <div class="ui button item animated">
+            <div class="visible content">Settings</div>
+            <div class="hidden content"><i class="setting icon"></i></div>
+        </div>
+    </div>
+</head>
+<br><br>
+
 <body>
-    <div class="ui block icon header tiny">
-        <i class="setting icon"></i>
-        <div class="content">Watcher Settings</div>
+    {% block content %}
+    {% endblock %}
+    <div class="ui inverted black vertical footer segment">
+        <div class="ui container">
+            <div class="ui stackable inverted divided equal height grid">
+                <div class="seven width column centered">
+                    <h4 class="ui inverted header">Contact</h4>
+                    <p>Raymond Ding</p>
+                    <p>Phone: +86-131-3817-9262</p>
+                    <p>
+                    <address>Internal Email: <a href="mailto:dingxingyuan@goodix.com">dingxingyuan@goodix.com</a>
+                    </address>
+                    </p>
+                    <p>
+                    <address>External Email: <a href="mailto:xingyuan.ding@gmail.com">xingyuan.ding@gmail.com</a>
+                    </address>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
