@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="ui container centered">
+
+    <div class="ui divided"></div>
+    <table class="ui table  celled selectable">
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Port@Lic_Srv</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Version</th>
+            </tr>
+        </thead>
+        <tbody>
+            <meta charset="utf-8">
+            {% for item in data %}
+            <tr>
+                <td>{{ item.index }}</td>
+                <td>{{ item.port}}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.version}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}
