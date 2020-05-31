@@ -15,6 +15,7 @@
                 <th>Description</th>
                 <th>Status</th>
                 <th>Version</th>
+                <th>Location</th>
             </tr>
         </thead>
         <tbody>
@@ -22,10 +23,11 @@
             {% for item in data %}
             <tr>
                 <td>{{ item.index }}</td>
-                <td>{{ item.port}}</td>
+                <td>{{ item.port +'@'+ item.server}}</td>
                 <td>{{ item.description }}</td>
                 <td>{{ item.status }}</td>
                 <td>{{ item.version}}</td>
+                <td><i class="{{item.country}} flag"></i>{{ item.country }}</td>
             </tr>
             {% endfor %}
 
