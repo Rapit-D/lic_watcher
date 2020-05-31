@@ -27,7 +27,21 @@
                 <td>{{ item.description }}</td>
                 <td>{{ item.status }}</td>
                 <td>{{ item.version}}</td>
-                <td><i class="{{item.country}} flag"></i>{{ item.country }}</td>
+                <td><i class="{{item.country}} flag"></i>
+
+                    {% if item.country == 'cn' %}
+                    China
+                    {% elif item.country == 'nl' %}
+                    Netherlands
+                    {% elif item.country == 'us' %}
+                    USA
+                    {% elif item.country == 'eg' %}
+                    Egypt
+                    {% elif item.country == 'jp' %}
+                    Japan
+                    {% endif %}
+
+                </td>
             </tr>
             {% endfor %}
 
