@@ -1,6 +1,71 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="ui segment centered">
+    <form action="/watchedlist" method='POST' class="ui form" id='form'>
+        <h3 class="ui dividing header">Adding new license server</h3>
+        <div class="filed">
+            <label for="portnumber">Port@Server</label>
+            <div class="two fields">
+                <div class="field">
+                    <input type="text" id="portnumber" Name="portnumber" placeholder="Port Number">
+                </div>
+                <div class="field">
+                    <input type="text" id="server" Name="server" placeholder="Server" required>
+                </div>
+            </div>
+            <div class="filed">
+                <label for="description">Description</label>
+                <input type="text" Name="description" placeholder="License">
+            </div>
+            <div class="field">
+                <label for="location">Location</label>
+                <select Name="location" id="location" class="ui dropdown" required>
+                    <option value="cn"><i class="cn flag">China</i></option>
+                    <option value="nl">Netherlands</option>
+                    <option value="us">USA</option>
+                    <option value="eg">Egypt</option>
+                    <option value="jp">Japan</option>
+                </select>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        <button class="ui teal button" type="submit">Add Server</button>
+    </form>
+</div>
 
 
+<script>
+    'use strict'
+    $('#location')
+        .dropdown()
+        ;
+    $('#form').validate({
+        submitHandler: function (form) {
+            $(form).ajaxSubmit();
+        },
+        rules: {
+            portnumber: { range: [1, 65535], required: true, digits: true },
+            server: { rangelength: [3, 50] },
+            description: { rangelength: [1, 500] }
+
+        },
+        messages: {
+            server: "Please use a valid domain name of license server!",
+            portnumber: "Please use a valid port number from 1~65535!"
+        }
+    });
+    // $(document).ready(function () {
+    //     // 当页面刷新完成 监听表单的submit 行为
+    //     $('#form').submit(function () {
+    //         let portnumber = $('#form #portnumber').val();
+    //         let server = $('#form #server').val();
+    //         let description = $('#form #server').val();
+    //         let location = $('#form #location').val();
+
+
+    //     })
+    // })
+
+</script>
 {% endblock %}
