@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="ui message success hidden" id='message_success'>
+    <i class="close icon"></i>
+    <div class="header">
+        Insert the server successful!
+    </div>
+</div>
+<div class="ui message warning hidden" id='message_fail'>
+    <i class="close icon"></i>
+    <div class="header">
+        Please try again, server doesn't insert into database!
+    </div>
+</div>
 <div class="ui segment centered">
     <form action="/watchedlist" method='POST' class="ui form" id="add_server" name="add_server">
         <h3 class="ui dividing header">Adding new license server</h3>
@@ -52,6 +64,7 @@
             server: "Please use a valid domain name of license server!",
             portnumber: "Please use a valid port number from 1~65535!"
         },
+        // 值转换为json 后使用ajax 提交表单
         submitHandler: function (form) {
             if ($("input[name='description']").val()) {
                 var description = String($("input[name='description']").val());
@@ -73,13 +86,29 @@
                 contentType: "application/json",
                 dataType: "text",
                 success: function (data) {
-                    console.log("success!")
+                    $("#message_success").removeClass('hidden');
                 },
                 error: function (e) {
-                    console.log("try again");
+                    $("#message_fail").removeClass('hidden');
                 }
             });
         }
     });
+
+    $("#message_success .close")
+        .on('click', function () {
+            $(this)
+                .closest('#message_success')
+                .transition('fade')
+                ;
+        });
+
+    $("#message_fail .close")
+        .on('click', function () {
+            $(this)
+                .closest('#message_fail')
+                .transition('fade')
+                ;
+        });
 </script>
 {% endblock %}

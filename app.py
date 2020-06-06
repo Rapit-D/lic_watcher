@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from flask_moment import Moment
+from marshmallow import Schema, fields, ValidationError
 
 
 app = Flask(__name__)
@@ -38,7 +39,31 @@ def hello_world():
 def setting():
     if request.method == "POST":
         data = request.json
-        print("data is:" + format(data))
+        try:
+            result = ServerSchema().load(data)
+            print(result)
+        except Exception as err:
+            print(err.messages)
         return render_template('watchedlist.html')
     else:
         return render_template('watchedlist.html')
+
+
+"""
+验证前端传来的数据
+"""
+
+
+def validate_portnumber(n):
+    # 验证portnumber 的值
+    if n <= 0:
+        raise ValidationError("Port number should reside between 1 ~ 65535")
+    elif n >= 65535:
+        raise ValidationError("Port number should reside between 1 ~ 65535")
+
+
+class ServerSchema(Schema):
+    portnumber = fields.Integer(required=True, validate=validate_portnumber)
+    server = fields.String(required=True)
+    description = fields.String()
+    location = fields.String(required=True)
