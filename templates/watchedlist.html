@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="ui segment centered">
-    <form action="/watchedlist" method='POST' class="ui form" id='form'>
+    <form action="/watchedlist" method='POST' class="ui form" id="add_server" name="add_server">
         <h3 class="ui dividing header">Adding new license server</h3>
         <div class="filed">
             <label for="portnumber">Port@Server</label>
@@ -11,12 +11,12 @@
                     <input type="text" id="portnumber" Name="portnumber" placeholder="Port Number">
                 </div>
                 <div class="field">
-                    <input type="text" id="server" Name="server" placeholder="Server" required>
+                    <input type="text" id="server" Name="server" placeholder="Server Name" required>
                 </div>
             </div>
             <div class="filed">
                 <label for="description">Description</label>
-                <input type="text" Name="description" placeholder="License">
+                <input type="text" Name="description" id="description" placeholder="License Description">
             </div>
             <div class="field">
                 <label for="location">Location</label>
@@ -30,42 +30,56 @@
             </div>
         </div>
         <div class="ui divider"></div>
-        <button class="ui teal button" type="submit">Add Server</button>
+        <button class="ui teal button" type="submit" id="sbnt">Add Server</button>
     </form>
 </div>
 
 
-<script>
+<script type="text/javascript">
     'use strict'
+
     $('#location')
         .dropdown()
         ;
-    $('#form').validate({
-        submitHandler: function (form) {
-            $(form).ajaxSubmit();
-        },
+
+    $('#add_server').validate({
         rules: {
             portnumber: { range: [1, 65535], required: true, digits: true },
             server: { rangelength: [3, 50] },
             description: { rangelength: [1, 500] }
-
         },
         messages: {
             server: "Please use a valid domain name of license server!",
             portnumber: "Please use a valid port number from 1~65535!"
+        },
+        submitHandler: function (form) {
+            if ($("input[name='description']").val()) {
+                var description = String($("input[name='description']").val());
+            } else {
+                var description = "1";
+            };
+
+            var data = {
+                portnumber: parseInt($("#portnumber").val()),
+                server: String($("#server").val()),
+                description: description,
+                location: String($("#location option:checked").val())
+            };
+            data = JSON.stringify(data);
+            $.ajax({
+                type: "POST",
+                url: "/watchedlist",
+                data: data,
+                contentType: "application/json",
+                dataType: "text",
+                success: function (data) {
+                    console.log("success!")
+                },
+                error: function (e) {
+                    console.log("try again");
+                }
+            });
         }
     });
-    // $(document).ready(function () {
-    //     // 当页面刷新完成 监听表单的submit 行为
-    //     $('#form').submit(function () {
-    //         let portnumber = $('#form #portnumber').val();
-    //         let server = $('#form #server').val();
-    //         let description = $('#form #server').val();
-    //         let location = $('#form #location').val();
-
-
-    //     })
-    // })
-
 </script>
 {% endblock %}

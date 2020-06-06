@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_moment import Moment
 
 
@@ -29,8 +29,16 @@ def hello_world():
     return render_template('home.html', data=context)
 
 
-@app.route('/watchedlist', methods={"POST", "GET"})  # 添加/删除license 服务器
+"""
+添加/删除license 服务器
+"""
+
+
+@app.route('/watchedlist', methods={"POST", "GET"})
 def setting():
-    data = request.get_json
-    print(data)
-    return render_template('watchedlist.html')
+    if request.method == "POST":
+        data = request.json
+        print("data is:" + format(data))
+        return render_template('watchedlist.html')
+    else:
+        return render_template('watchedlist.html')
