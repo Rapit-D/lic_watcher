@@ -6,47 +6,50 @@
 
 <div class="ui container centered">
 
-    <div class="ui divided"></div>
-    <table class="ui table  celled selectable">
-        <thead>
-            <tr>
-                <th>Number</th>
-                <th>Port@Lic_Srv</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Version</th>
-                <th>Location</th>
-            </tr>
-        </thead>
-        <tbody>
-            <meta charset="utf-8">
-            {% for item in data %}
-            <tr>
-                <td>{{ item.index }}</td>
-                <td>{{ item.port +'@'+ item.server}}</td>
-                <td>{{ item.description }}</td>
-                <td>{{ item.status }}</td>
-                <td>{{ item.version}}</td>
-                <td><i class="{{item.country}} flag"></i>
-
-                    {% if item.country == 'cn' %}
-                    China
-                    {% elif item.country == 'nl' %}
-                    Netherlands
-                    {% elif item.country == 'us' %}
-                    USA
-                    {% elif item.country == 'eg' %}
-                    Egypt
-                    {% elif item.country == 'jp' %}
-                    Japan
-                    {% endif %}
-
-                </td>
-            </tr>
-            {% endfor %}
-
-        </tbody>
+    <table class="ui table celled selectable">
 
     </table>
 </div>
+<script type="text/javascript">
+    // 获取服务器数据，成功则生成表格，失败则显示服务器连接失败
+    function table_generator() {
+        $.getJSON('/get_server_info', function (data) {
+            var items = [];
+            $(".table").append("<thead><tr><th>Number</th><th>Port@Lic_Srv</th><th>Description</th><th>Status</th><th>Version</th><th>Location</th><th>actions</th></tr></thead>");
+            $(".table").append("<tbody><meta charset = 'utf-8'>");
+            $.each(data, function (index, value) {
+                num = index + 1;
+                if (value['location'] === 'cn') {
+                    lo = "China";
+                } else if (value['location'] === 'nl') {
+                    lo = "Netherlands";
+                } else if (value['location'] === 'us') {
+                    lo = "USA";
+                } else if (value['location'] === "eg") {
+                    lo = "Egypt";
+                } else if (value['location'] === 'jp') {
+                    lo = "Japan";
+                } else {
+                    lo = "unknown"
+                };
+                console.log(lo);
+                items.push("<tr><td>" + num + "</td>"
+                    + "<td>" + value['portnumber'] + "@" + value['server'] + "</td>"
+                    + "<td>" + value['description'] + "</td>"
+                    + "<td> up </td>"
+                    + "<td> 123.0.0</td>"
+                    + "<td><i class='ui flag " + value['location'] + "'></i>" + lo + "</td>"
+                    + "<td>1/2</td><tr>"
+                );
+            });
+            items.forEach(function (element) {
+                $('.table').append(element)
+            });
+            $('.table').append("</tbody>")
+        });
+    };
+
+
+    $(document).ready(table_generator)
+</script>
 {% endblock %}

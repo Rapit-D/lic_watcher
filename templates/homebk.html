@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="ui container centered">
+
+    <div class="ui divided"></div>
+    <table class="ui table  celled selectable">
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Port@Lic_Srv</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Version</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <meta charset="utf-8">
+            {% for item in data %}
+            <tr>
+                <td>{{ item.index }}</td>
+                <td>{{ item.port +'@'+ item.server}}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.version}}</td>
+                <td><i class="{{item.country}} flag"></i>
+
+                    {% if item.country == 'cn' %}
+                    China
+                    {% elif item.country == 'nl' %}
+                    Netherlands
+                    {% elif item.country == 'us' %}
+                    USA
+                    {% elif item.country == 'eg' %}
+                    Egypt
+                    {% elif item.country == 'jp' %}
+                    Japan
+                    {% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}

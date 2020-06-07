@@ -1,33 +1,34 @@
 from flask import Flask, render_template, request, redirect
 from flask_moment import Moment
-from marshmallow import Schema, fields, ValidationError
+from marshmallow import Schema, fields, ValidationError, pprint
 
 
 app = Flask(__name__)
 
+"""
+主页
+"""
+
 
 @app.route('/')
 def hello_world():
-    context = [{
-        'index': 1,
-        'port': "5800",
-        'server': 'sz-glblic01',
-        'description': 'Cadence Server',
-        'status': 'UP',
-        'version': '10.16.13',
-        'country': 'cn'
-    },
-        {
-        'index': 2,
-        'port': '27020',
-        'server': 'sz-glblic01',
-        'description': 'Synopls',
-        'status': 'UP',
-        'version': '200.1.3',
-        'country': 'nl'
-    }
-    ]
-    return render_template('home.html', data=context)
+    return render_template('home.html')
+
+
+"""
+主页表格数据API
+"""
+
+
+@app.route('/get_server_info')
+def get_server_info():
+    with open('static/server_info/servers.json', 'r') as f:
+        server_info = f.read()
+        serverschema = ServerSchema(many=True)
+        result = serverschema.loads(server_info)
+        result = serverschema.dumps(result)
+        f.close()
+    return result
 
 
 """
