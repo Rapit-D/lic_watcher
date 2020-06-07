@@ -10,7 +10,7 @@ app = Flask(__name__)
 def hello_world():
     context = [{
         'index': 1,
-        'port': '5800',
+        'port': "5800",
         'server': 'sz-glblic01',
         'description': 'Cadence Server',
         'status': 'UP',
@@ -41,7 +41,18 @@ def setting():
         data = request.json
         try:
             result = ServerSchema().load(data)
-            print(result)
+            with open("static/server_info/servers.json", "r") as f:
+                server_info = f.read()
+                serverschema = ServerSchema(many=True)
+                result = serverschema.loads(server_info)
+                f.close()
+
+            result.append(data)
+
+            with open("static/server_info/servers.json", 'w') as f:
+                json_data = serverschema.dumps(result)
+                f.write(json_data)
+                f.close()
         except Exception as err:
             print(err.messages)
         return render_template('watchedlist.html')
