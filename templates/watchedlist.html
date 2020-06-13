@@ -77,7 +77,9 @@
                 portnumber: parseInt($("#portnumber").val()),
                 server: String($("#server").val()),
                 description: description,
-                location: String($("#location option:checked").val())
+                location: String($("#location option:checked").val()),
+                status: "",
+                version: ""
             };
             data = JSON.stringify(data);
             $.ajax({

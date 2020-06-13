@@ -1,0 +1,220 @@
+lmstat - Copyright (c) 1989-2019 Flexera. All Rights Reserved.
+Flexible License Manager status on Mon 5/25/2020 09:05
+
+License server status: 5280@SZ-glblic01
+    License file(s) on SZ-glblic01: /etc/sa/c.dat:
+
+SZ-glblic01: license server UP (MASTER) v11.16.4
+
+Vendor daemon status (on SZ-glblic01):
+
+    cdslmd: UP v11.16.4
+Feature usage info:
+
+Users of LicFileVersion:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Use_Server_Options:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of 111:  (Total of 74 licenses issued;  Total of 0 licenses in use)
+
+Users of 940:  (Total of 30 licenses issued;  Total of 0 licenses in use)
+
+Users of 945:  (Total of 30 licenses issued;  Total of 0 licenses in use)
+
+Users of Affirma_sim_analysis_env:  (Total of 152 licenses issued;  Total of 0 licenses in use)
+
+Users of Analog_Design_Environment_L:  (Total of 10 licenses issued;  Total of 0 licenses in use)
+
+Users of Analog_Design_Environment_XL:  (Total of 6 licenses issued;  Total of 1 license in use)
+
+  "Analog_Design_Environment_XL" v6.18, vendor: cdslmd, expiry: 01-jun-2020
+  vendor_string: UHD:LicFileVersion:PERM
+  floating license
+
+    jschenk nl1node008.vas.goodix.com 10.22.28.103:8 (v6.170) (SZ-glblic01/5280 2901), start Thu 5/21 10:43
+
+Users of COSLITE_ACCESS:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Conformal_Asic:  (Total of 3 licenses issued;  Total of 0 licenses in use)
+
+Users of Conformal_Cnstrnt_Dsgnr_L_LL:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Conformal_Custom:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Conformal_Low_Power:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Conformal_Ultra:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of DFM_Core_Technology:  (Total of 4 licenses issued;  Total of 0 licenses in use)
+
+Users of Encounter_C:  (Total of 5 licenses issued;  Total of 0 licenses in use)
+
+Users of Genus_Physical_Opt:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Genus_Synthesis:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Innovus_C:  (Total of 4 licenses issued;  Total of 0 licenses in use)
+
+Users of Innovus_CPU_Opt:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Innovus_Impl_System:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Innovus_Impl_System_Basic:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Integrated_Metrics_Center:  (Total of 65 licenses issued;  Total of 0 licenses in use)
+
+Users of Modus_DFT_Opt:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Modus_Diagnostics:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Modus_PMBIST_Opt:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Modus_Test:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Modus_common_ui:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Phys_Ver_Sys_Adv_Ana_Opt:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Phys_Ver_Sys_Prog_ERC:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Phys_Ver_Sys_Results_Mgr:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Spectre_AMS_MMSIM_Lk:  (Total of 150 licenses issued;  Total of 0 licenses in use)
+
+Users of Tempus_Timing_Signoff_XL:  (Total of 3 licenses issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_ADE_Assembler:  (Total of 10 licenses issued;  Total of 1 license in use)
+
+  "Virtuoso_ADE_Assembler" v6.18, vendor: cdslmd, expiry: 22-feb-2021
+  vendor_string: UHD:LicFileVersion:PERM
+  floating license
+
+    afawzy asicsim02 :14.0 (v6.180) (SZ-glblic01/5280 570), start Mon 5/25 7:46
+
+Users of Virtuoso_APS_MMSIM_Lk:  (Total of 150 licenses issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_Acceler_Parallel_sc:  (Total of 10 licenses issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_Digital_Implem_XL:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_Layout_Suite_GXL:  (Total of 36 licenses issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_Layout_Suite_XL:  (Total of 9 licenses issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_MMSIM_CPU_Accelerator:  (Total of 10 licenses issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_Multi_mode_Simulation:  (Total of 150 licenses issued;  Total of 50 licenses in use)
+
+  "Virtuoso_Multi_mode_Simulation" v19.1, vendor: cdslmd, expiry: 22-feb-2021
+  vendor_string: J:LicFileVersion:PERM
+  floating license
+
+    jschenk nl1node211 :95 APS Base (v19.100) (SZ-glblic01/5280 6661), start Sun 5/24 5:15, 2 licenses
+    jschenk nl1node211 :95 APS Multi-core (Max. 4 cores) (v19.100) (SZ-glblic01/5280 7426), start Sun 5/24 5:17, 2 licenses
+    jschenk nl1node211 :95 APS Multi-core (Max. 4 cores) (v19.100) (SZ-glblic01/5280 1523), start Sun 5/24 9:47, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Base (v15.100) (SZ-glblic01/5280 2484), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Multi-core (Max. 4 cores) (v15.100) (SZ-glblic01/5280 5725), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Base (v15.100) (SZ-glblic01/5280 1301), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Base (v15.100) (SZ-glblic01/5280 3994), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Base (v15.100) (SZ-glblic01/5280 1765), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Multi-core (Max. 4 cores) (v15.100) (SZ-glblic01/5280 15253), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Multi-core (Max. 4 cores) (v15.100) (SZ-glblic01/5280 208), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Multi-core (Max. 4 cores) (v15.100) (SZ-glblic01/5280 14242), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Multi-core (Max. 4 cores) (v15.100) (SZ-glblic01/5280 10320), start Sun 5/24 16:38, 2 licenses
+    fchalet nl1node212 10.22.28.102:6 AMSD_Link (v15.100) (SZ-glblic01/5280 12475), start Mon 5/25 6:05, 2 licenses
+    zabbix nl1node212 10.22.28.102:6 APS Base (v15.100) (SZ-glblic01/5280 104), start Mon 5/25 6:05, 2 licenses
+    zabbix nl1node212 10.22.28.102:6 APS Multi-core (Max. 16 cores) (v15.100) (SZ-glblic01/5280 6449), start Mon 5/25 6:05, 4 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Base (v15.100) (SZ-glblic01/5280 5288), start Mon 5/25 6:27, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Multi-core (Max. 16 cores) (v15.100) (SZ-glblic01/5280 7244), start Mon 5/25 6:27, 4 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Base (v15.100) (SZ-glblic01/5280 12845), start Mon 5/25 6:33, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Multi-core (Max. 16 cores) (v15.100) (SZ-glblic01/5280 8195), start Mon 5/25 6:34, 4 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Base (v15.100) (SZ-glblic01/5280 15084), start Mon 5/25 6:39, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 APS Multi-core (Max. 16 cores) (v15.100) (SZ-glblic01/5280 3255), start Mon 5/25 6:39, 4 licenses
+
+Users of Virtuoso_QRC_Extraction_XL:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_Schematic_Editor_L:  (Total of 20 licenses issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_Schematic_Editor_XL:  (Total of 10 licenses issued;  Total of 0 licenses in use)
+
+Users of Virtuoso_Spectre:  (Total of 4 licenses issued;  Total of 4 licenses in use)
+
+  "Virtuoso_Spectre" v19.1, vendor: cdslmd, expiry: 01-jun-2020
+  vendor_string: J:LicFileVersion:PERM
+  floating license
+
+    mhassanein egysim03.goodix.com :14.0 (v19.100) (SZ-glblic01/5280 3101), start Thu 5/21 10:43
+    mhany egy-l148-pc :0.0 (v19.100) (SZ-glblic01/5280 8928), start Thu 5/21 22:24
+    mhassanein egy-l109-pc :0.0 (v19.100) (SZ-glblic01/5280 7138), start Fri 5/22 1:37
+    helgibaly egy-l127-pc :0.0 (v19.100) (SZ-glblic01/5280 3629), start Sat 5/23 19:30
+
+Users of Virtuoso_Spectre_GXL_MMSIM_Lk:  (Total of 150 licenses issued;  Total of 36 licenses in use)
+
+  "Virtuoso_Spectre_GXL_MMSIM_Lk" v19.1, vendor: cdslmd, expiry: 22-feb-2021
+  vendor_string: J:LicFileVersion:PERM
+  floating license
+
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 14332), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 5698), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 12716), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 5068), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 14611), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 5458), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 13732), start Sun 5/24 16:38, 2 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 7554), start Sun 5/24 16:38, 2 licenses
+    fchalet nl1node212 10.22.28.102:6 AMSD_Link (v15.100) (SZ-glblic01/5280 3547), start Mon 5/25 6:05, 2 licenses
+    zabbix nl1node212 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 12666), start Mon 5/25 6:05, 2 licenses
+    zabbix nl1node212 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 13456), start Mon 5/25 6:05, 4 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 6094), start Mon 5/25 6:27, 4 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 4353), start Mon 5/25 6:34, 4 licenses
+    webalizer nl1node003.vas.goodix.com 10.22.28.102:6 (v15.100) (SZ-glblic01/5280 957), start Mon 5/25 6:39, 4 licenses
+
+Users of Virtuoso_XPS_MMSIM_Lk:  (Total of 150 licenses issued;  Total of 0 licenses in use)
+
+Users of Vmanager_High_Availability:  (Total of 6 licenses issued;  Total of 2 licenses in use)
+
+  "Vmanager_High_Availability" v20.0, vendor: cdslmd, expiry: 04-jul-2020
+  vendor_string: UHD:LicFileVersion:PERM
+  floating license
+
+    skolte nl1node008.vas.goodix.com 10.22.28.103:2 ACD1431473034 (v19.0) (SZ-glblic01/5280 609), start Thu 5/21 10:42
+    sgulati nl1node008.vas.goodix.com 10.22.28.102:5 ACD291557002 (v19.0) (SZ-glblic01/5280 13320), start Fri 5/22 21:27
+
+Users of Voltus_Power_Integrity_XL:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of Xcelium_SC_DMS_Option:  (Total of 45 licenses issued;  Total of 0 licenses in use)
+
+Users of Xcelium_Single_Core:  (Total of 65 licenses issued;  Total of 1 license in use)
+
+  "Xcelium_Single_Core" v20.0, vendor: cdslmd, expiry: 09-jun-2020
+  vendor_string: J:LicFileVersion:PERM
+  floating license
+
+    dsavage nl1node008.vas.goodix.com 10.22.28.102:7 Xcelium Single Core Engine (v19.000) (SZ-glblic01/5280 3402), start Thu 5/21 10:44
+
+Users of jasper_papp:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of jasper_pcov:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of jasper_pint:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+   verplex: UP v11.16.4
+Feature usage info:
+
+Users of conformal_datapath:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of conformal_ldd:  (Total of 3 licenses issued;  Total of 0 licenses in use)
+
+Users of conformal_lec:  (Total of 3 licenses issued;  Total of 0 licenses in use)
+
+Users of conformal_lvr:  (Total of 2 licenses issued;  Total of 0 licenses in use)
+
+Users of conformal_mem:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+Users of conformal_vhd:  (Total of 3 licenses issued;  Total of 0 licenses in use)
+
+Users of conformal_vlg:  (Total of 3 licenses issued;  Total of 0 licenses in use)
+
+Users of transformal_ltx:  (Total of 1 license issued;  Total of 0 licenses in use)
+
+
