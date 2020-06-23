@@ -15,7 +15,7 @@
     function table_generator() {
         $.getJSON('/get_server_info', function (data) {
             var items = [];
-            $(".table").append("<thead><tr><th>Number</th><th>Port@Lic_Srv</th><th>Description</th><th>Status</th><th>Version</th><th>Location</th><th>actions</th></tr></thead>");
+            $(".table").append("<thead><tr><th>Number</th><th>Port@Lic_Srv</th><th>Description</th><th>Status</th><th>Version</th><th>Location</th><th>update time</th><th>actions</th></tr></thead>");
             $(".table").append("<tbody><meta charset = 'utf-8'>");
             $.each(data, function (index, value) {
                 num = index + 1;
@@ -39,6 +39,7 @@
                     + "<td>" + value['version'] + "</td>"
                     + "<td>" + value['status'] + "</td>"
                     + "<td><i class='ui flag " + value['location'] + "'></i>" + lo + "</td>"
+                    + "<td>" + value['update_time'] + "</td>"
                     + "<td>1/2</td><tr>"
                 );
             });

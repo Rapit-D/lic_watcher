@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="ui grid">
+    <div class="row">
+        <div class="three wide column"></div>
+        <div class="ten wide column">
+            <div class="ui form">
+                <div class="two fields">
+                    <div class="field">
+                        <label>Start date</label>
+                        <div class="ui calendar" id="rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="Start">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>End date</label>
+                        <div class="ui calendar" id="rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="End">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="three wide column"></div>
+    </div>
+    <div class="row">
+        <div class="three wide column"></div>
+        <div class="ten wide column">
+            <div id="mychart"></div>
+        </div>
+        <div class="three wide column"></div>
+    </div>
+    <div class="row">
+        <div class="two column"></div>
+        <div class="four wide column">1</div>
+        <div class="four wide column">2</div>
+        <div class="four wide column">3</div>
+        <div class="two column"></div>
+    </div>
+</div>
+</div>
+
+<script>
+    var options = {
+        chart: {
+            type: 'line'
+        },
+        series: [{
+            name: "A",
+            data: [{
+                x: new Date('2020-05-25 09:05:00').getTime(),
+                y: 32
+            }, {
+                x: new Date('2020-05-25 09:15:00').getTime(),
+                y: 18
+            }, {
+                x: new Date('2020-05-25 09:25:00').getTime(),
+                y: 22
+            }]
+        }, {
+            name: "B",
+            data: [{
+                x: new Date('2020-05-25 09:05:00').getTime(),
+                y: 17
+            }, {
+                x: new Date('2020-05-25 09:15:00').getTime(),
+                y: 22
+            }, {
+                x: new Date('2020-05-25 09:25:00').getTime(),
+                y: 30
+            }]
+        }],
+        xaxis: {
+            type: 'datetime'
+        }
+    }
+
+    var chart = new ApexCharts(document.querySelector('#mychart'), options)
+    chart.render()
+    $('').ready($.getJSON('chart_data', function (data) {
+        console.log(data);
+    }))
+
+    // calendar selector
+    $('#rangestart').calendar({
+        type: 'date',
+        endCalendar: $('#rangeend')
+    });
+    $('#rangeend').calendar({
+        type: 'date',
+        startCalendar: $('#rangestart')
+    });
+</script>
+
+{% endblock %}
