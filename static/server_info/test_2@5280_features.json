@@ -1,0 +1,12 @@
+{
+    "features": [
+        "conformal_datapath",
+        "conformal_ldd",
+        "conformal_lec",
+        "conformal_lvr",
+        "conformal_mem",
+        "conformal_vhd",
+        "conformal_vlg"
+    ],
+    "server": "test_2@5280"
+}

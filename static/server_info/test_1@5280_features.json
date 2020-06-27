@@ -1,0 +1,10 @@
+{
+    "features": [
+        "LicFileVersion",
+        "Use_Server_Options",
+        "111",
+        "940",
+        "945"
+    ],
+    "server": "test_1@5280"
+}

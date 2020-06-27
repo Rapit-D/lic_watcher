@@ -1,0 +1,29 @@
+[
+    {
+        "description": "sz license server 01",
+        "portnumber": 5280,
+        "update_time": "2020-05-25  09:05:00",
+        "version": "v11.16.4",
+        "location": "cn",
+        "status": "UP",
+        "server": "SZ-glblic01"
+    },
+    {
+        "description": "test_1",
+        "portnumber": 5280,
+        "update_time": "2020-05-25  09:05:00",
+        "version": " ",
+        "location": " ",
+        "status": "UP",
+        "server": "test_1"
+    },
+    {
+        "description": "test_2",
+        "portnumber": 5280,
+        "update_time": "2020-05-25  09:05:00",
+        "version": " ",
+        "location": " ",
+        "status": "UP",
+        "server": "test_2"
+    }
+]

@@ -1,7 +1,8 @@
+from functions.lic_validator import home_page_schema, sql_query_schema, pprint, ServerSchema, srv_features_schema, srv_features_schemas
+from functions.json_loader import json_loader
+from functions import his_data
 from flask import Flask, render_template, request, redirect, Blueprint
-from .lic_validator import ServerSchema, validate_portnumber
-from .DB import session
-from .chart_data import chart_data
+
 
 app = Flask(__name__)
 
@@ -15,11 +16,10 @@ def hello_world():
 @app.route("/get_server_info")
 def get_server_info():
     # 主页表格数据API
-    with open("static/server_info/servers.json", "r") as f:
+    with open("static/server_info/home_page.json", "r") as f:
         server_info = f.read()
-        serverschema = ServerSchema(many=True)
-        result = serverschema.loads(server_info)
-        result = serverschema.dumps(result)
+        result = home_page_schema.loads(server_info)
+        result = home_page_schema.dumps(result)
         f.close()
     return result
 
@@ -30,16 +30,15 @@ def setting():
     if request.method == "POST":
         data = request.json
         result = ServerSchema().load(data)
-        with open("static/server_info/servers.json", "r") as f:
+        with open("static/server_info/home_page.json", "r") as f:
             server_info = f.read()
-            serverschema = ServerSchema(many=True)
-            result = serverschema.loads(server_info)
+            result = home_page_schema.loads(server_info)
             f.close()
 
         result.append(data)
 
-        with open("static/server_info/servers.json", 'w') as f:
-            json_data = serverschema.dumps(result)
+        with open("static/server_info/home_page.json", 'w') as f:
+            json_data = home_page_schema.dumps(result)
             f.write(json_data)
             f.close()
         return render_template("watchedlist.html")
@@ -47,25 +46,35 @@ def setting():
         return render_template("watchedlist.html")
 
 
-@app.route("/test", methods={"post"})
-def test():
-    data = request.json
-    dataty = type(data)
-    return render_template("test.html", data=data, dataty=dataty)
-
-
 @app.route("/historical_data")
 def historical_data():
     return render_template("historical_data.html")
 
 
-@app.route("/chart_data", methods={'GET'})
+@app.route("/chart_data", methods={'GET', 'POST'})
 def chart_data():
+    if request.method == 'GET':
+        data = his_data.sql_data()
+        result = sql_query_schema.dumps(data)
+    return result
 
-    sql, params = chart_data(min_date='2020-06-10', max_date='2020-06-11',
-                             server=['5280@SZ-glblic01',
-                                     '5280@nl1lic01.vas.goodix.com'],
-                             feature=['111', 'Capture_CIS_Studio'])
-    data = session.execute(sql, params)
-    print(data.fetchone())
-    return data
+
+@app.route("/test", methods={"get"})
+def test():
+    data = json_loader("static/server_info/home_page.json")
+    data = home_page_schema.loads(data)
+
+    return render_template("test.html")
+
+
+@app.route("/srv_features_info", methods={"post"})
+def srv_features_info():
+    data = request.json
+    _files = []
+    for item in data['servers']:
+        _files.append('static/server_info/' + item + '_features.json')
+    result = []
+    for item in _files:
+        result.append(srv_features_schema.loads(json_loader(item)))
+    result = srv_features_schemas.dumps(result)
+    return result

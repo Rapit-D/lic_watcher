@@ -3,91 +3,64 @@
 {% block content %}
 
 <div class="ui grid">
-    <div class="row">
-        <div class="three wide column"></div>
-        <div class="ten wide column">
-            <div class="ui form">
-                <div class="two fields">
-                    <div class="field">
-                        <label>Start date</label>
-                        <div class="ui calendar" id="rangestart">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                <input type="text" placeholder="Start">
-                            </div>
+    <div class="two wide column"></div>
+    <div class="twelve wide column">
+        <div class="ui form">
+            <div class="two fields">
+                <div class="field">
+                    <label>Start date</label>
+                    <div class="ui calendar" id="rangestart">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="Start">
                         </div>
                     </div>
-                    <div class="field">
-                        <label>End date</label>
-                        <div class="ui calendar" id="rangeend">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                <input type="text" placeholder="End">
-                            </div>
+                </div>
+                <div class="field">
+                    <label>End date</label>
+                    <div class="ui calendar" id="rangeend">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="End">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="three wide column"></div>
     </div>
-    <div class="row">
-        <div class="three wide column"></div>
-        <div class="ten wide column">
-            <div id="mychart"></div>
+    <div class="two wide column"></div>
+</div>
+
+
+
+
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="three wide column">
+        <div class="ui form">
+            <button class="ui primary button" id="sql_apply">
+                Apply
+            </button>
+            <div id="srv_info">Servers:</div>
+            <div id="features_info">Features:</div>
+
         </div>
+    </div>
+    <div class="eleven wide column">
+        <div id="mychart"></div>
         <div class="three wide column"></div>
     </div>
-    <div class="row">
-        <div class="two column"></div>
-        <div class="four wide column">1</div>
-        <div class="four wide column">2</div>
-        <div class="four wide column">3</div>
-        <div class="two column"></div>
-    </div>
 </div>
-</div>
+
+
+
 
 <script>
-    var options = {
-        chart: {
-            type: 'line'
-        },
-        series: [{
-            name: "A",
-            data: [{
-                x: new Date('2020-05-25 09:05:00').getTime(),
-                y: 32
-            }, {
-                x: new Date('2020-05-25 09:15:00').getTime(),
-                y: 18
-            }, {
-                x: new Date('2020-05-25 09:25:00').getTime(),
-                y: 22
-            }]
-        }, {
-            name: "B",
-            data: [{
-                x: new Date('2020-05-25 09:05:00').getTime(),
-                y: 17
-            }, {
-                x: new Date('2020-05-25 09:15:00').getTime(),
-                y: 22
-            }, {
-                x: new Date('2020-05-25 09:25:00').getTime(),
-                y: 30
-            }]
-        }],
-        xaxis: {
-            type: 'datetime'
-        }
-    }
-
-    var chart = new ApexCharts(document.querySelector('#mychart'), options)
-    chart.render()
-    $('').ready($.getJSON('chart_data', function (data) {
-        console.log(data);
-    }))
+    // 
+    $(document).ready(function () {
+        chart_render();
+        Srv_info_checkbox_generator();
+    })
 
     // calendar selector
     $('#rangestart').calendar({
@@ -98,6 +71,136 @@
         type: 'date',
         startCalendar: $('#rangestart')
     });
+
+    // calendar 设置默认值
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd; // 获取今天的值
+    var td = new Date();
+
+    var last_mon = new Date(td - 1000 * 60 * 60 * 24 * 30); //获取30天前的时间
+    var last_dd = String(last_mon.getDate()).padStart(2, '0');
+    var last_mm = String(last_mon.getMonth() + 1).padStart(2, '0');
+    var last_yy = String(last_mon.getFullYear());
+
+    last_mon = last_yy + '-' + last_mm + '-' + last_dd;
+
+    $("#rangestart").calendar('set date', last_mon)
+    $("#rangeend").calendar('set date', today)
+
+    // 判断#srv_info 的checked/unchecked
+
+
+
+
+    // 判断chart 的name 是否重复
+    var arrayHasElement = function (array, element) {  // 判断二维数组array中是否存在一维数组element
+        for (var el of array) {
+            if (el.length === element.length) {
+                for (var index in el) {
+                    if (el[index] !== element[index]) {
+                        break;
+                    }
+                    if (index == (el.length - 1)) {    // 到最后一个元素都没有出现不相等，就说明这两个数组相等。
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    var srv_port_list = []
+    function Srv_info_checkbox_generator() {
+
+        $.getJSON('/get_server_info', function (data) {
+            var items = [];
+            $.each(data, function (index, value) {
+                items.push("<div class='three wide column'><div class='ui checkbox'><input type='checkbox' name='" + value['portnumber'] + '@' + value['server']
+                    + "' value='" + value['portnumber'] + '@' + value['server'] + "'><label>" + value['portnumber'] + '@' + value['server'] + "</label></div></div>")
+                srv_port_list.push(value["server"] + "@" + value["portnumber"])
+            });
+            items.forEach(function (element) {
+                $('#srv_info').append(element)
+            });
+        }).done(function () {
+            $.ajax({
+                type: "POST",
+                url: '/srv_features_info',
+                data: JSON.stringify({
+                    "servers": srv_port_list
+                }),
+                success: function (data) {
+                    Srv_features_info_checkbox_generator(data);
+                },
+                contentType: "application/json",
+                dataType: "text"
+            });
+        });
+    };
+
+    function feature_info_list() {
+        $('.checkbox')
+    }
+    // 读取后台数据，对数据进行整理，为生成图表所需格式做准备
+    function chart_render() {
+        $.getJSON('/chart_data', function (data) {
+            var feature_server_lists = new Array();
+            var obj = {};
+            $.each(data, function (index, value) {
+                name = value['server'] + ' ' + value['feature']
+                if (arrayHasElement(feature_server_lists, [value['server'], value['feature']])) {
+                    ct = value['current_date'] + ' ' + value['current_time']
+                    _xy_data = { x: new Date(ct).getTime(), y: value['current_users'] };
+                    obj[name].push(_xy_data);
+                    return;
+                } else {
+                    feature_server_lists.push([value['server'], value['feature']]);
+                    ct = value['current_date'] + ' ' + value['current_time']
+                    _xy_data = { x: new Date(ct).getTime(), y: value['current_users'] };
+                    obj[name] = [_xy_data];
+                }
+            });
+            var series_data = []
+            Object.keys(obj).forEach(function (element, value, array) {
+                series_data.push({
+                    name: element,
+                    data: obj[element]
+                })
+            })
+            var options = {
+                chart: { type: 'line' },
+                series: series_data,
+                xaxis: {
+                    type: 'datetime'
+                }
+            }
+            var chart = new ApexCharts(document.querySelector('#mychart'), options);
+            chart.render();
+        });
+    };
+
+    //js 列表去重，用来生成feature
+    function unique_array(arr) {
+        return Array.from(new Set(arr))
+    }
+
+
+    //根据返回值，去重并生成features 的checkbox 
+    function Srv_features_info_checkbox_generator(data) {
+        let features = []
+        data = JSON.parse(data);
+        data.forEach(function (element) {
+            features = features.concat(element.features);
+        })
+        features = unique_array(features)
+        features.forEach(function (element) {
+            $('#features_info').append("<div class='ui three wide column'><div class='ui checkbox'><input type='checkbox' name='" + element + "' value='" + element + "'><label>" + element + "</label></div>")
+        })
+    }
+
 </script>
 
 {% endblock %}
