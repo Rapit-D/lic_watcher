@@ -40,4 +40,3 @@ data = []
 for item in files:
     with open(item, 'r') as fp:
         data.append(srv_feature_schema.loads(fp.read()))
-print(data)

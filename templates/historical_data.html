@@ -42,7 +42,8 @@
                 Apply
             </button>
             <div id="srv_info">Servers:</div>
-            <div id="features_info">Features:</div>
+            <p>Features:</p>
+            <div id="features_info"></div>
 
         </div>
     </div>
@@ -56,7 +57,7 @@
 
 
 <script>
-
+    'use strict'
     $(document).ready(function () {
         chart_render();
         Srv_info_checkbox_generator();
@@ -91,9 +92,37 @@
     $("#rangestart").calendar('set date', last_mon)
     $("#rangeend").calendar('set date', today)
 
-    // 判断#srv_info 的checked/unchecked
+    // 判断#srv_info 的checked 的值来生成对应的features 
 
-
+    function srv_info_checked_val() {
+        let srv_info_checked_values = [];
+        var v = $("#srv_info :checkbox");
+        $.each(v, function () {
+            if ($(this).is(":checked")) {
+                console.log($(this).val());
+                srv_info_checked_values.push($(this).val());
+            };
+        });
+        return srv_info_checked_values;
+    };
+    $("#srv_info .checkbox").checkbox().checkbox({
+        onChange: function () {
+            var v = [];
+            v = srv_info_checked_val();
+            $.ajax({
+                type: "POST",
+                url: '/srv_features_info',
+                data: JSON.stringify({
+                    "servers": srv_port_list
+                }),
+                success: function (data) {
+                    Srv_features_info_checkbox_generator(data, v);
+                },
+                contentType: "application/json",
+                dataType: "text"
+            })
+        }
+    });
 
 
     // 判断chart 的name 是否重复
@@ -111,15 +140,15 @@
             }
         }
         return false;
-    }
+    };
     var srv_port_list = []
     function Srv_info_checkbox_generator() {
 
         $.getJSON('/get_server_info', function (data) {
             var items = [];
             $.each(data, function (index, value) {
-                items.push("<div class='three wide column'><div class='ui checkbox'><input type='checkbox' name='" + value['portnumber'] + '@' + value['server']
-                    + "' value='" + value['portnumber'] + '@' + value['server'] + "'><label>" + value['portnumber'] + '@' + value['server'] + "</label></div></div>")
+                items.push("<div class='three wide column'><div class='ui checkbox'><input type='checkbox' name='" + value['server'] + '@' + value['portnumber']
+                    + "' value='" + value['server'] + '@' + value['portnumber'] + "'><label>" + value['server'] + '@' + value['portnumber'] + "</label></div></div>")
                 srv_port_list.push(value["server"] + "@" + value["portnumber"])
             });
             items.forEach(function (element) {
@@ -134,7 +163,11 @@
                 }),
                 success: function (data) {
                     console.log(data);
-                    Srv_features_info_checkbox_generator(data);
+                    var first_srv = [$("#srv_info input").first().val()];
+                    $("#srv_info .checkbox").first().addClass("checked");
+                    $("#srv_info input").first().attr({ checked: "" });
+                    console.log(first_srv);
+                    Srv_features_info_checkbox_generator(data, first_srv);
                 },
                 contentType: "application/json",
                 dataType: "text"
@@ -152,6 +185,8 @@
             var obj = {};
             $.each(data, function (index, value) {
                 name = value['server'] + ' ' + value['feature']
+                var ct = new String();
+                var _xy_data = new Object;
                 if (arrayHasElement(feature_server_lists, [value['server'], value['feature']])) {
                     ct = value['current_date'] + ' ' + value['current_time']
                     _xy_data = { x: new Date(ct).getTime(), y: value['current_users'] };
@@ -190,13 +225,19 @@
 
 
     //根据返回值，去重并生成features 的checkbox 
-    function Srv_features_info_checkbox_generator(data) {
-        let features = []
+    function Srv_features_info_checkbox_generator(data, srvs) {
+        $("#features_info").empty();
+        var features = [];
         data = JSON.parse(data);
-        data.forEach(function (element) {
-            features = features.concat(element.features);
-        })
-        features = unique_array(features)
+        data.forEach(function (data_value) {
+            srvs.forEach(function (srv_value) {
+                if (data_value.server === srv_value) {
+                    features.concat(data_value.features);
+                }
+            });
+        });
+        // features = unique_array(features)
+        console.log(features)
         features.forEach(function (element) {
             $('#features_info').append("<div class='ui three wide column'><div class='ui checkbox'><input type='checkbox' name='" + element + "' value='" + element + "'><label>" + element + "</label></div>")
         })
