@@ -1,29 +1,29 @@
 [
     {
-        "description": "sz license server 01",
-        "portnumber": 5280,
-        "update_time": "2020-05-25  09:05:00",
         "version": "v11.16.4",
-        "location": "cn",
+        "server": "SZ-glblic01",
+        "description": "sz license server 01",
         "status": "UP",
-        "server": "SZ-glblic01"
+        "update_time": "2020-05-25  09:05:00",
+        "portnumber": 5280,
+        "location": "cn"
     },
     {
+        "version": "",
+        "server": "test_1",
         "description": "test_1",
-        "portnumber": 5280,
-        "update_time": "2020-05-25  09:05:00",
-        "version": " ",
-        "location": " ",
         "status": "UP",
-        "server": "test_1"
+        "update_time": " ",
+        "portnumber": 5280,
+        "location": "cn"
     },
     {
+        "version": "",
+        "server": "test_2",
         "description": "test_2",
-        "portnumber": 5280,
-        "update_time": "2020-05-25  09:05:00",
-        "version": " ",
-        "location": " ",
         "status": "UP",
-        "server": "test_2"
+        "update_time": " ",
+        "portnumber": 5280,
+        "location": "nl"
     }
 ]

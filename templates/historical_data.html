@@ -56,7 +56,7 @@
 
 
 <script>
-    // 
+
     $(document).ready(function () {
         chart_render();
         Srv_info_checkbox_generator();
@@ -133,6 +133,7 @@
                     "servers": srv_port_list
                 }),
                 success: function (data) {
+                    console.log(data);
                     Srv_features_info_checkbox_generator(data);
                 },
                 contentType: "application/json",

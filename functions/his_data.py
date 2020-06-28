@@ -3,7 +3,7 @@ from datetime import date, timedelta, datetime
 import types
 
 
-def sql_data(min_date=30, max_date=date.today(), server=['5280@SZ-glblic01'], feature=['111']):
+def sql_data(min_date=30, max_date=date.today(), server=['5280@SZ-glblic01', '5280@nl1lic01.vas.goodix.com'], feature=['111']):
     # 依次传入查询的最早时间，若不指定则为查询日期的30 天前
     # 传入查询的最晚时间，若不指定则为查询日期的当天
     # 传入查询的server 字段，为列表类型，默认为空值
