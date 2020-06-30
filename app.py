@@ -53,9 +53,15 @@ def historical_data():
 
 @app.route("/chart_data", methods={'GET', 'POST'})
 def chart_data():
-    if request.method == 'GET':
+    if request.method == 'POST':
+        data = request.json
+
+        data = his_data.sql_data(min_date=data['start_date'].split('T')[
+                                 0], max_date=data['end_date'].split('T')[0], server=data['srvs'], feature=data['features'])
+
+    elif request.method == 'GET':
         data = his_data.sql_data()
-        result = sql_query_schema.dumps(data)
+    result = sql_query_schema.dumps(data)
     return result
 
 
@@ -63,7 +69,6 @@ def chart_data():
 def test():
     data = json_loader("static/server_info/home_page.json")
     data = home_page_schema.loads(data)
-
     return render_template("test.html")
 
 
