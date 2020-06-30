@@ -114,7 +114,7 @@ class Log_parser():
                     features.append(current_feature)
                     continue
         # 对SQL 确定insert 动作
-        # conn.commit()
+        conn.commit()
         # 刷新整个Srv_feature_info.json
         server_name = current_port + "@" + current_srv
         server_feature_file = 'static/server_info/' + \
