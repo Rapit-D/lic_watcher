@@ -38,13 +38,12 @@
     <div class="one wide column"></div>
     <div class="three wide column">
         <div class="ui form">
-            <button class="ui primary button" id="sql_apply">
-                Apply
-            </button>
             <div id="srv_info">Servers:</div>
             <p>Features:</p>
             <div id="features_info"></div>
-
+            <button class="ui primary button" id="sql_apply">
+                Apply
+            </button>
         </div>
     </div>
     <div class="eleven wide column">
@@ -105,24 +104,8 @@
         });
         return srv_info_checked_values;
     };
-    $("#srv_info .checkbox").checkbox().checkbox({
-        onChange: function () {
-            var v = [];
-            v = srv_info_checked_val();
-            $.ajax({
-                type: "POST",
-                url: '/srv_features_info',
-                data: JSON.stringify({
-                    "servers": srv_port_list
-                }),
-                success: function (data) {
-                    Srv_features_info_checkbox_generator(data, v);
-                },
-                contentType: "application/json",
-                dataType: "text"
-            })
-        }
-    });
+
+
 
 
     // 判断chart 的name 是否重复
@@ -162,15 +145,33 @@
                     "servers": srv_port_list
                 }),
                 success: function (data) {
-                    console.log(data);
                     var first_srv = [$("#srv_info input").first().val()];
                     $("#srv_info .checkbox").first().addClass("checked");
                     $("#srv_info input").first().attr({ checked: "" });
-                    console.log(first_srv);
                     Srv_features_info_checkbox_generator(data, first_srv);
+
                 },
                 contentType: "application/json",
                 dataType: "text"
+            }).done(function () {
+                $("#srv_info .checkbox").checkbox().checkbox({
+                    onChange: function () {
+                        var v = [];
+                        v = srv_info_checked_val();
+                        $.ajax({
+                            type: "POST",
+                            url: '/srv_features_info',
+                            data: JSON.stringify({
+                                "servers": srv_port_list
+                            }),
+                            success: function (data) {
+                                Srv_features_info_checkbox_generator(data, v);
+                            },
+                            contentType: "application/json",
+                            dataType: "text"
+                        })
+                    }
+                });
             });
         });
     };
@@ -232,17 +233,15 @@
         data.forEach(function (data_value) {
             srvs.forEach(function (srv_value) {
                 if (data_value.server === srv_value) {
-                    features.concat(data_value.features);
+                    features = features.concat(data_value.features);
                 }
             });
         });
         // features = unique_array(features)
-        console.log(features)
         features.forEach(function (element) {
             $('#features_info').append("<div class='ui three wide column'><div class='ui checkbox'><input type='checkbox' name='" + element + "' value='" + element + "'><label>" + element + "</label></div>")
         })
     }
-
 </script>
 
 {% endblock %}
