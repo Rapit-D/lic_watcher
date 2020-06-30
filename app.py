@@ -65,13 +65,6 @@ def chart_data():
     return result
 
 
-@app.route("/test", methods={"get"})
-def test():
-    data = json_loader("static/server_info/home_page.json")
-    data = home_page_schema.loads(data)
-    return render_template("test.html")
-
-
 @app.route("/srv_features_info", methods={"post"})
 def srv_features_info():
     data = request.json
