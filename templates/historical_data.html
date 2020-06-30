@@ -60,7 +60,34 @@
     $(document).ready(function () {
         chart_render();
         Srv_info_checkbox_generator();
-    })
+    });
+
+
+    // 根据checkbox 选中值传递参数到后台进行sql 查询
+
+    $('#sql_apply')
+        .on('click', function () {
+            let applied_data = {
+                start_date: $("#rangestart").calendar("get date"),
+                end_date: $("#rangeend").calendar("get date"),
+                srvs: srv_info_checked_val(),
+                features: feature_info_checked_val()
+            };
+            $.ajax({
+                type: "POST",
+                url: '/chart_data',
+                data: JSON.stringify(applied_data),
+                success: function (data) {
+                    data = JSON.parse(data);
+                    $("#mychart").empty();
+                    chart_data(data);
+                },
+                contentType: "application/json",
+                dataType: "text"
+            });
+        });
+
+
 
     // calendar selector
     $('#rangestart').calendar({
@@ -98,14 +125,22 @@
         var v = $("#srv_info :checkbox");
         $.each(v, function () {
             if ($(this).is(":checked")) {
-                console.log($(this).val());
                 srv_info_checked_values.push($(this).val());
             };
         });
         return srv_info_checked_values;
     };
 
-
+    function feature_info_checked_val() {
+        let fea_info_checked_values = [];
+        let v = $("#features_info :checkbox");
+        $.each(v, function () {
+            if ($(this).is(":checked")) {
+                fea_info_checked_values.push($(this).val());
+            };
+        });
+        return fea_info_checked_values;
+    };
 
 
     // 判断chart 的name 是否重复
@@ -131,8 +166,8 @@
             var items = [];
             $.each(data, function (index, value) {
                 items.push("<div class='three wide column'><div class='ui checkbox'><input type='checkbox' name='" + value['server'] + '@' + value['portnumber']
-                    + "' value='" + value['server'] + '@' + value['portnumber'] + "'><label>" + value['server'] + '@' + value['portnumber'] + "</label></div></div>")
-                srv_port_list.push(value["server"] + "@" + value["portnumber"])
+                    + "' value='" + value['portnumber'] + '@' + value['server'] + "'><label>" + value['portnumber'] + '@' + value['server'] + "</label></div></div>")
+                srv_port_list.push(value["portnumber"] + "@" + value["server"])
             });
             items.forEach(function (element) {
                 $('#srv_info').append(element)
@@ -149,7 +184,6 @@
                     $("#srv_info .checkbox").first().addClass("checked");
                     $("#srv_info input").first().attr({ checked: "" });
                     Srv_features_info_checkbox_generator(data, first_srv);
-
                 },
                 contentType: "application/json",
                 dataType: "text"
@@ -176,53 +210,57 @@
         });
     };
 
-    function feature_info_list() {
-        $('.checkbox')
-    }
     // 读取后台数据，对数据进行整理，为生成图表所需格式做准备
     function chart_render() {
         $.getJSON('/chart_data', function (data) {
-            var feature_server_lists = new Array();
-            var obj = {};
-            $.each(data, function (index, value) {
-                name = value['server'] + ' ' + value['feature']
-                var ct = new String();
-                var _xy_data = new Object;
-                if (arrayHasElement(feature_server_lists, [value['server'], value['feature']])) {
-                    ct = value['current_date'] + ' ' + value['current_time']
-                    _xy_data = { x: new Date(ct).getTime(), y: value['current_users'] };
-                    obj[name].push(_xy_data);
-                    return;
-                } else {
-                    feature_server_lists.push([value['server'], value['feature']]);
-                    ct = value['current_date'] + ' ' + value['current_time']
-                    _xy_data = { x: new Date(ct).getTime(), y: value['current_users'] };
-                    obj[name] = [_xy_data];
-                }
-            });
-            var series_data = []
-            Object.keys(obj).forEach(function (element, value, array) {
-                series_data.push({
-                    name: element,
-                    data: obj[element]
-                })
-            })
-            var options = {
-                chart: { type: 'line' },
-                series: series_data,
-                xaxis: {
-                    type: 'datetime'
-                }
-            }
-            var chart = new ApexCharts(document.querySelector('#mychart'), options);
-            chart.render();
+            console.log(typeof data);
+            chart_data(data);
         });
     };
+
+    // 生成图表
+    function chart_data(data) {
+        var feature_server_lists = new Array();
+        var obj = {};
+        $.each(data, function (index, value) {
+            name = value['server'] + ' ' + value['feature']
+            var ct = new String();
+            var _xy_data = new Object;
+            if (arrayHasElement(feature_server_lists, [value['server'], value['feature']])) {
+                ct = value['current_date'] + ' ' + value['current_time']
+                _xy_data = { x: new Date(ct).getTime(), y: value['current_users'] };
+                obj[name].push(_xy_data);
+                return;
+            } else {
+                feature_server_lists.push([value['server'], value['feature']]);
+                ct = value['current_date'] + ' ' + value['current_time']
+                _xy_data = { x: new Date(ct).getTime(), y: value['current_users'] };
+                obj[name] = [_xy_data];
+            }
+        });
+        var series_data = []
+        Object.keys(obj).forEach(function (element, value, array) {
+            series_data.push({
+                name: element,
+                data: obj[element]
+            })
+        })
+        var options = {
+            chart: { type: 'line' },
+            series: series_data,
+            xaxis: {
+                type: 'datetime'
+            }
+        }
+        var chart = new ApexCharts(document.querySelector('#mychart'), options);
+        chart.render();
+    };
+
 
     //js 列表去重，用来生成feature
     function unique_array(arr) {
         return Array.from(new Set(arr))
-    }
+    };
 
 
     //根据返回值，去重并生成features 的checkbox 
@@ -242,6 +280,8 @@
             $('#features_info').append("<div class='ui three wide column'><div class='ui checkbox'><input type='checkbox' name='" + element + "' value='" + element + "'><label>" + element + "</label></div>")
         })
     }
+
 </script>
+
 
 {% endblock %}

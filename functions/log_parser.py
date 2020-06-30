@@ -116,9 +116,9 @@ class Log_parser():
         # 对SQL 确定insert 动作
         # conn.commit()
         # 刷新整个Srv_feature_info.json
-        server_name = current_srv + "@" + current_port
+        server_name = current_port + "@" + current_srv
         server_feature_file = 'static/server_info/' + \
-            current_srv+'@'+current_port + '_features.json'
+            current_port + '@' + current_srv + '_features.json'
         server_feature_file = self.static_file_dir(server_feature_file)
         Srv_features = {"server": server_name, "features": features}
         self.Srv_features_info_create(server_feature_file, Srv_features)
