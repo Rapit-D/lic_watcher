@@ -1,6 +1,7 @@
 from functions.lic_validator import home_page_schema, sql_query_schema, pprint, ServerSchema, srv_features_schema, srv_features_schemas
 from functions.json_loader import json_loader
 from functions import his_data
+from functions.log_parser import log_parser
 from flask import Flask, render_template, request, redirect, Blueprint
 
 
@@ -76,3 +77,9 @@ def srv_features_info():
         result.append(srv_features_schema.loads(json_loader(item)))
     result = srv_features_schemas.dumps(result)
     return result
+
+
+@app.route("/get_current_feature_status", methods={"get"})
+def get_current_feature_status():
+    log_parser = log_parser()
+    return log_parser.user_checked_info()

@@ -1,17 +1,19 @@
 import re
 import os
 from datetime import date, time, datetime
-from lic_validator import home_page_schema, srv_features_schema
-from DB import session, conn
+from .lic_validator import home_page_schema, srv_features_schema
+from .DB import session, conn
 
 
-class Log_parser():
+class log_parser():
     # 分析lmstat -a -c 生成的log 文件
 
     # re 表达式
     _lmstat_time_pattern = r'^Flexible License Manager status on (?P<mday>\S+)\s(?P<mon>\d+)/(?P<day>\d+)/(?P<year>\d+)\s(?P<hour>\d+):(?P<min>\d+)'
     _lmstat_server_status = r'(?P<server>\S+): license server (?P<status>\S+)\s\(\w+\)\s(?P<version>\S+)$'
     _lmstat_feature_pattern = r'^ of (?P<feature>\S+):\s{2,10}\(Total of (?P<total_lic>\d+).{25,28}(?P<in_use_lic>\d+)'
+    _lmstat_current_users_1 = r'\s{0,10}(?P<User>\S+)\s(?P<client>\S+)\s(?P<ip_addr>\S+).+start\s\S{3}\s(?P<date>\S+)\s(?P<time>\S+),\s(?P<lic_checkedout>\S+) licenses'
+    _lmstat_current_users_2 = r'\s{0,10}(?P<User>\S+)\s(?P<client>\S+)\s(?P<ip_addr>\S+).+start\s\S{3}\s(?P<date>\S+)\s(?P<time>\S+)'
 
     def __init__(self, log_file, keyword):
         self.file = log_file
@@ -123,10 +125,57 @@ class Log_parser():
         Srv_features = {"server": server_name, "features": features}
         self.Srv_features_info_create(server_feature_file, Srv_features)
 
+    def user_checked_info(self):
+        _data = self.log_slicer()
+        current_status = []
+        for section in _data[1:]:
+            try:
+                groups = re.match(self._lmstat_feature_pattern,
+                                  section.splitlines()[0])
+                if int(groups.group("in_use_lic")) > 0:
+                    for line in section.splitlines():
+                        current_feature = {"feature": groups.group("feature")}
+                        group_user = re.match(
+                            self._lmstat_current_users_1, line)
+                        if group_user:
+                            current_feature['current_username'] = group_user.group(
+                                "User")
+                            current_feature['current_client'] = group_user.group(
+                                "client")
+                            current_feature['currrent_ip_addr'] = group_user.group(
+                                "ip_addr")
+                            current_feature['start_date'] = group_user.group(
+                                "date")
+                            current_feature['start_time'] = group_user.group(
+                                "time")
+                            current_feature['current_lic_checkedout'] = group_user.group(
+                                "lic_checkedout")
+                            current_status.append(current_feature)
+                        else:
+                            group_user = re.match(
+                                self._lmstat_current_users_2, line)
+                            if group_user:
+                                current_feature['current_username'] = group_user.group(
+                                    "User")
+                                current_feature['current_client'] = group_user.group(
+                                    "client")
+                                current_feature['currrent_ip_addr'] = group_user.group(
+                                    "ip_addr")
+                                current_feature['start_date'] = group_user.group(
+                                    "date")
+                                current_feature['start_time'] = group_user.group(
+                                    "time")
+                                current_feature['current_lic_checkedout'] = 1
+                                current_status.append(current_feature)
+            except Exception:
+                continue
+        return current_status
+
 
 if __name__ == "__main__":
     parent_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     log_file = os.path.join(
         parent_dir, 'static/server_info/5280@SZ-glblic01.log')
-    log_parser = Log_parser(log_file, 'Users')
-    log_parser.log_parser()
+    log_parser = log_parser(log_file, 'Users')
+    # log_parser.log_parser()
+    # log_parser.user_checked_info()
