@@ -50,6 +50,7 @@
         <div id="mychart"></div>
         <div class="three wide column"></div>
     </div>
+    <div class="" id="table_srv_info"></div>
     <div class="ui celled selectable table" id="current_feature_status">
     </div>
 </div>
@@ -171,9 +172,14 @@
                     + "' value='" + value['portnumber'] + '@' + value['server'] + "'><label>" + value['portnumber'] + '@' + value['server'] + "</label></div></div>")
                 srv_port_list.push(value["portnumber"] + "@" + value["server"])
             });
+            // generate left side filter servers checkbox
             items.forEach(function (element) {
                 $('#srv_info').append(element)
             });
+            // generate bottom table filter servers checkbox
+            items.forEach(function (element) {
+                $("#table_srv_info").append(element)
+            })
         }).done(function () {
             $.ajax({
                 type: "POST",
@@ -285,6 +291,13 @@
 
     // 生成所选服务器此时的使用情况
     function current_status_table() {
+        $.ajax({
+            type: "POST",
+            url: "/get_current)feature_status",
+            data: JSON.stringify({
+
+            })
+        });
         $.getJSON('/get_current_feature_status', function (data) {
             var items = [];
             $("#current_feature_status").append("<thead><tr><th>Number</th><th><Feature></th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>lic num checked out</th></thead>");

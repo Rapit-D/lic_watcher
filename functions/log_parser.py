@@ -142,7 +142,7 @@ class log_parser():
                                 "User")
                             current_feature['current_client'] = group_user.group(
                                 "client")
-                            current_feature['currrent_ip_addr'] = group_user.group(
+                            current_feature['current_ip_addr'] = group_user.group(
                                 "ip_addr")
                             current_feature['start_date'] = group_user.group(
                                 "date")
@@ -159,13 +159,13 @@ class log_parser():
                                     "User")
                                 current_feature['current_client'] = group_user.group(
                                     "client")
-                                current_feature['currrent_ip_addr'] = group_user.group(
+                                current_feature['current_ip_addr'] = group_user.group(
                                     "ip_addr")
                                 current_feature['start_date'] = group_user.group(
                                     "date")
                                 current_feature['start_time'] = group_user.group(
                                     "time")
-                                current_feature['current_lic_checkedout'] = 1
+                                current_feature['current_lic_checkedout'] = "1"
                                 current_status.append(current_feature)
             except Exception:
                 continue

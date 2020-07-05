@@ -1,8 +1,9 @@
-from functions.lic_validator import home_page_schema, sql_query_schema, pprint, ServerSchema, srv_features_schema, srv_features_schemas
+from functions.lic_validator import home_page_schema, sql_query_schema, pprint, ServerSchema, srv_features_schema, srv_features_schemas, current_lic_usage
 from functions.json_loader import json_loader
 from functions import his_data
 from functions.log_parser import log_parser
 from flask import Flask, render_template, request, redirect, Blueprint
+import os
 
 
 app = Flask(__name__)
@@ -79,7 +80,24 @@ def srv_features_info():
     return result
 
 
-@app.route("/get_current_feature_status", methods={"get"})
+@app.route("/get_current_feature_status", methods={"post"})
 def get_current_feature_status():
-    log_parser = log_parser()
-    return log_parser.user_checked_info()
+    data = request.json
+    current_dir = os.path.abspath(os.path.dirname(__file__))
+    log_file = os.path.join(
+        current_dir, f'static/server_info/{data["srvs"]}.log')
+    result = []
+    parser = log_parser(log_file, 'Users')
+    data = parser.user_checked_info()
+
+    for item in parser.user_checked_info():
+        print(type(item['current_ip_addr']))
+        result.append(item)
+    result = current_lic_usage.dumps(result)
+    pprint(result)
+    return result
+
+
+@app.route("/test")
+def test():
+    return render_template("test.html")

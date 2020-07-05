@@ -47,3 +47,19 @@ class Srv_Feature_info(Schema):
 
 srv_features_schema = Srv_Feature_info()
 srv_features_schemas = Srv_Feature_info(many=True)
+
+
+class Current_lic_usage(Schema):
+    """
+    validate log_parser.user_checked_info data
+    """
+    feature = fields.String()
+    current_username = fields.String()
+    current_ip_addr = fields.String()
+    start_date = fields.String()
+    start_time = fields.String()
+    current_lic_checkedout = fields.String()
+    current_client = fields.String()
+
+
+current_lic_usage = Current_lic_usage(many=True)
