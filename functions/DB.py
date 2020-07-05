@@ -4,7 +4,7 @@ from datetime import date, time
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, 'licenses.db')
+DB_PATH = os.path.join(BASE_DIR, 'lic.db')
 
 
 def dict_factory(cursor, row):
