@@ -3,38 +3,79 @@
 {% block content %}
 
 <div class="ui grid">
-    <div class="two wide column"></div>
-    <div class="twelve wide column">
-        <div class="ui form">
-            <div class="two fields">
-                <div class="field">
-                    <label>Start date</label>
-                    <div class="ui calendar" id="rangestart">
-                        <div class="ui input left icon">
-                            <i class="calendar icon"></i>
-                            <input type="text" placeholder="Start">
+    <div class="row">
+        <div class="three wide column"></div>
+        <div class="twelve wide column">
+            <div class="ui form">
+                <div class="two fields">
+                    <div class="field">
+                        <label>Start date</label>
+                        <div class="ui calendar" id="rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="Start">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label>End date</label>
-                    <div class="ui calendar" id="rangeend">
-                        <div class="ui input left icon">
-                            <i class="calendar icon"></i>
-                            <input type="text" placeholder="End">
+                    <div class="field">
+                        <label>End date</label>
+                        <div class="ui calendar" id="rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="End">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="one wide column"></div>
     </div>
-    <div class="two wide column"></div>
+    <div class="row">
+        <div class="three wide column">
+            <div class="basic segment">
+                <div class="ui form">
+                    <div class="ui basic segment">
+                        <div class="ui vertical segment">
+                            <div class="ui primary button" id="sql_apply">Apply</div>
+                        </div>
+                    </div>
+                    <div class="ui basic segment">
+                        <p>Server:</p>
+                        <div class="ui checkbox" id="srv_info"></div>
+                    </div>
+                    <div class="ui basic segment">
+                        <p>Features:</p>
+                        <div class="ui checkbox" id="features_info"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="eleven wide column">
+            <div class="basic segment">
+                <div class="ui vertical segement">
+                    <div id="mychart"></div>
+                </div>
+                <div class="ui form">
+                    <div class="ui vertical basic segment">
+                        <div class="inline basic fields" id="table_srv_info">
+                            <label>Lic Servers:</label>
+                        </div>
+                    </div>
+                    <div class="ui vertical basic segment">
+                    </div>
+                    <div class="ui vertical basic segment">
+                        <h5>Current Usage:</h5>
+                        <div class="ui table celled selectable" id="current_feature_status"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
-
-
-<div class="ui grid">
+<!-- <div class="ui grid">
     <div class="one wide column"></div>
     <div class="three wide column">
         <div class="ui form">
@@ -53,7 +94,9 @@
     <div class="" id="table_srv_info"></div>
     <div class="ui celled selectable table" id="current_feature_status">
     </div>
-</div>
+</div> -->
+
+
 
 
 
@@ -91,6 +134,45 @@
         });
 
 
+    // 根据radio 单选框，查询服务器license 使用情况
+    $("#table_srv_info")
+        .on('click', function () {
+            let applied_data = {
+                srvs: $("#table_srv_info input[name='current_usage']:checked").val()
+            };
+            console.log(applied_data);
+            $.ajax({
+                type: "POST",
+                url: "/get_current_feature_status",
+                data: JSON.stringify(applied_data),
+                success: function (data) {
+                    data = JSON.parse(data);
+                    console.log(data['current_ip_addr']);
+                    $("#current_feature_status").empty();
+                    var items = [];
+                    $("#current_feature_status").append("<thead><tr><th>Index</th><th>Feature</th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>license number checked</th></thead>");
+                    $("#current_feature_status").append("<tbody><meta charset = 'uft-8>'");
+                    $.each(data, function (index, value) {
+                        items.push("<tr><td>" + index + "</td>"
+                            + "<td>" + value["feature"] + "</td>"
+                            + "<td>" + value["current_username"] + "</td>"
+                            + "<td>" + value["current_client"] + "</td>"
+                            + "<td>" + value["current_ip_addr"] + "</td>"
+                            + "<td>" + value["start_date"] + "&nbsp;" + value["start_time"] + "</td>"
+                            + "<td>" + value["current_lic_checkedout"] + "</td></tr>"
+                        );
+                    });
+                    items.forEach(function (element) {
+                        $("#current_feature_status").append(element)
+
+                    });
+                    $("#current_feature_status").append("</tbody>")
+                },
+                contentType: "application/json",
+                dataType: "text"
+
+            });
+        });
 
     // calendar selector
     $('#rangestart').calendar({
@@ -145,6 +227,16 @@
         return fea_info_checked_values;
     };
 
+    // function current_usage_checked_val() {
+    //     let current_usage_checked_values = [];
+    //     var v = $("#current :checkbox");
+    //     $.each(v, function () {
+    //         if ($(this).is(":checked")) {
+    //             current_usage_checked_values.push($(this).val());
+    //         };
+    //     });
+    //     return current_usage_checked_values;
+    // };
 
     // 判断chart 的name 是否重复
     var arrayHasElement = function (array, element) {  // 判断二维数组array中是否存在一维数组element
@@ -164,22 +256,27 @@
     };
     var srv_port_list = []
     function Srv_info_checkbox_generator() {
-
         $.getJSON('/get_server_info', function (data) {
-            var items = [];
+            var items = []; // left side srv filter
+            var items_1 = []; // bottom side table srv filter
             $.each(data, function (index, value) {
-                items.push("<div class='three wide column'><div class='ui checkbox'><input type='checkbox' name='" + value['server'] + '@' + value['portnumber']
-                    + "' value='" + value['portnumber'] + '@' + value['server'] + "'><label>" + value['portnumber'] + '@' + value['server'] + "</label></div></div>")
+                items.push("<div class='ui checkbox'><input type='checkbox' name='" + value['server'] + '@' + value['portnumber']
+                    + "' value='" + value['portnumber'] + '@' + value['server'] + "'><label>" + value['portnumber'] + '@' + value['server'] + "</label></div>")
                 srv_port_list.push(value["portnumber"] + "@" + value["server"])
             });
             // generate left side filter servers checkbox
             items.forEach(function (element) {
                 $('#srv_info').append(element)
             });
-            // generate bottom table filter servers checkbox
-            items.forEach(function (element) {
-                $("#table_srv_info").append(element)
+            $.each(data, function (index, value) {
+                items_1.push("<div class='ui radio checkbox'><input type='radio' name='current_usage' value='" + value['portnumber'] + '@' + value['server'] + "'><label>" + value['portnumber'] + '@' + value['server'] + "</label></div>")
             })
+
+            // generate bottom table filter servers checkbox
+            items_1.forEach(function (element) {
+                $("#table_srv_info").append("<div class='filed'>" + element + "</div>")
+            });
+            $("#table_srv_info input").first().attr({ checked: "checked" });
         }).done(function () {
             $.ajax({
                 type: "POST",
@@ -214,6 +311,42 @@
                         })
                     }
                 });
+            }).done(function () {
+                let applied_data = {
+                    srvs: $("#table_srv_info input[name='current_usage']:checked").val()
+                };
+                console.log(applied_data);
+                $.ajax({
+                    type: "POST",
+                    url: "/get_current_feature_status",
+                    data: JSON.stringify(applied_data),
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        console.log(data['current_ip_addr']);
+                        $("#current_feature_status").empty();
+                        var items = [];
+                        $("#current_feature_status").append("<thead><tr><th>Index</th><th>Feature</th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>license number checked</th></thead>");
+                        $("#current_feature_status").append("<tbody><meta charset = 'uft-8>'");
+                        $.each(data, function (index, value) {
+                            items.push("<tr><td>" + index + "</td>"
+                                + "<td>" + value["feature"] + "</td>"
+                                + "<td>" + value["current_username"] + "</td>"
+                                + "<td>" + value["current_client"] + "</td>"
+                                + "<td>" + value["current_ip_addr"] + "</td>"
+                                + "<td>" + value["start_date"] + "&nbsp;" + value["start_time"] + "</td>"
+                                + "<td>" + value["current_lic_checkedout"] + "</td></tr>"
+                            );
+                        });
+                        items.forEach(function (element) {
+                            $("#current_feature_status").append(element)
+
+                        });
+                        $("#current_feature_status").append("</tbody>")
+                    },
+                    contentType: "application/json",
+                    dataType: "text"
+
+                });
             });
         });
     };
@@ -221,7 +354,6 @@
     // 读取后台数据，对数据进行整理，为生成图表所需格式做准备
     function chart_render() {
         $.getJSON('/chart_data', function (data) {
-            print(data)
             chart_data(data);
         });
     };
@@ -291,32 +423,58 @@
 
     // 生成所选服务器此时的使用情况
     function current_status_table() {
+        let applied_data = {
+            srvs: current_usage_checked_val()
+        };
+        console.log(1);
         $.ajax({
             type: "POST",
-            url: "/get_current)feature_status",
-            data: JSON.stringify({
+            url: "/get_current_feature_status",
+            data: JSON.stringify(applied_data),
+            success: function (data) {
+                data = JSON.parse(data);
+                $("#current_feature_status").empty();
+                var items = [];
+                $("#current_feature_status").append("<thead><tr><th>Number</th><th><Feature></th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>lic num checked out</th></thead>");
+                $("#current_feature_status").append("<tbody><meta charset = 'uft-8>'");
+                $.each(data, function (index, value) {
+                    items.push("<tr><td>" + index + 1 + "</td>"
+                        + "<td>" + value["feature"] + "</td>"
+                        + "<td>" + value["current_username"] + "</td>"
+                        + "<td>" + value["current_client"] + "</td>"
+                        + "<td>" + value["current_ip_addr"] + "</td>"
+                        + "<td>" + value["start_date"] + "&nbsp;" + value["start_time"] + "</td>"
+                        + "<td>" + value["current_lic_checkedout"] + "</td>"
+                    );
+                });
+                items.forEach(function (element) {
+                    $("#current_feature_status").append(elment)
+                });
+                $("#current_feature_status").append("</tbody>")
+            },
+            contentType: "application/json",
+            dataType: "text"
 
-            })
         });
-        $.getJSON('/get_current_feature_status', function (data) {
-            var items = [];
-            $("#current_feature_status").append("<thead><tr><th>Number</th><th><Feature></th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>lic num checked out</th></thead>");
-            $("#current_feature_status").append("<tbody><meta charset = 'uft-8>'");
-            $.each(data, function (index, value) {
-                items.push("<tr><td>" + index + 1 + "</td>"
-                    + "<td>" + value["feature"] + "</td>"
-                    + "<td>" + value["current_username"] + "</td>"
-                    + "<td>" + value["current_client"] + "</td>"
-                    + "<td>" + value["current_ip_addr"] + "</td>"
-                    + "<td>" + value["start_date"] + "&nbsp;" + value["start_time"] + "</td>"
-                    + "<td>" + value["current_lic_checkedout"] + "</td>"
-                );
-            });
-            items.forEach(function (element) {
-                $("#current_feature_status").append(elment)
-            });
-            $("#current_feature_status").append("</tbody>")
-        });
+        // $.getJSON('/get_current_feature_status', function (data) {
+        //     var items = [];
+        //     $("#current_feature_status").append("<thead><tr><th>Number</th><th><Feature></th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>lic num checked out</th></thead>");
+        //     $("#current_feature_status").append("<tbody><meta charset = 'uft-8>'");
+        //     $.each(data, function (index, value) {
+        //         items.push("<tr><td>" + index + 1 + "</td>"
+        //             + "<td>" + value["feature"] + "</td>"
+        //             + "<td>" + value["current_username"] + "</td>"
+        //             + "<td>" + value["current_client"] + "</td>"
+        //             + "<td>" + value["current_ip_addr"] + "</td>"
+        //             + "<td>" + value["start_date"] + "&nbsp;" + value["start_time"] + "</td>"
+        //             + "<td>" + value["current_lic_checkedout"] + "</td>"
+        //         );
+        //     });
+        //     items.forEach(function (element) {
+        //         $("#current_feature_status").append(elment)
+        //     });
+        //     $("#current_feature_status").append("</tbody>")
+        // });
     }
 </script>
 
