@@ -91,10 +91,8 @@ def get_current_feature_status():
     data = parser.user_checked_info()
 
     for item in parser.user_checked_info():
-        print(type(item['current_ip_addr']))
         result.append(item)
     result = current_lic_usage.dumps(result)
-    pprint(result)
     return result
 
 

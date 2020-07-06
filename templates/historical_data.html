@@ -75,32 +75,6 @@
 </div>
 
 
-<!-- <div class="ui grid">
-    <div class="one wide column"></div>
-    <div class="three wide column">
-        <div class="ui form">
-            <div id="srv_info">Servers:</div>
-            <p>Features:</p>
-            <div id="features_info"></div>
-            <button class="ui primary button" id="sql_apply">
-                Apply
-            </button>
-        </div>
-    </div>
-    <div class="eleven wide column">
-        <div id="mychart"></div>
-        <div class="three wide column"></div>
-    </div>
-    <div class="" id="table_srv_info"></div>
-    <div class="ui celled selectable table" id="current_feature_status">
-    </div>
-</div> -->
-
-
-
-
-
-
 <script>
     'use strict'
     $(document).ready(function () {
@@ -140,14 +114,12 @@
             let applied_data = {
                 srvs: $("#table_srv_info input[name='current_usage']:checked").val()
             };
-            console.log(applied_data);
             $.ajax({
                 type: "POST",
                 url: "/get_current_feature_status",
                 data: JSON.stringify(applied_data),
                 success: function (data) {
                     data = JSON.parse(data);
-                    console.log(data['current_ip_addr']);
                     $("#current_feature_status").empty();
                     var items = [];
                     $("#current_feature_status").append("<thead><tr><th>Index</th><th>Feature</th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>license number checked</th></thead>");
@@ -227,17 +199,6 @@
         return fea_info_checked_values;
     };
 
-    // function current_usage_checked_val() {
-    //     let current_usage_checked_values = [];
-    //     var v = $("#current :checkbox");
-    //     $.each(v, function () {
-    //         if ($(this).is(":checked")) {
-    //             current_usage_checked_values.push($(this).val());
-    //         };
-    //     });
-    //     return current_usage_checked_values;
-    // };
-
     // 判断chart 的name 是否重复
     var arrayHasElement = function (array, element) {  // 判断二维数组array中是否存在一维数组element
         for (var el of array) {
@@ -315,14 +276,12 @@
                 let applied_data = {
                     srvs: $("#table_srv_info input[name='current_usage']:checked").val()
                 };
-                console.log(applied_data);
                 $.ajax({
                     type: "POST",
                     url: "/get_current_feature_status",
                     data: JSON.stringify(applied_data),
                     success: function (data) {
                         data = JSON.parse(data);
-                        console.log(data['current_ip_addr']);
                         $("#current_feature_status").empty();
                         var items = [];
                         $("#current_feature_status").append("<thead><tr><th>Index</th><th>Feature</th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>license number checked</th></thead>");
@@ -426,7 +385,6 @@
         let applied_data = {
             srvs: current_usage_checked_val()
         };
-        console.log(1);
         $.ajax({
             type: "POST",
             url: "/get_current_feature_status",
