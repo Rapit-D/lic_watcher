@@ -1,8 +1,8 @@
 import re
 import os
 from datetime import date, time, datetime
-from .lic_validator import home_page_schema, srv_features_schema
-from .DB import session, conn
+from lic_validator import home_page_schema, srv_features_schema
+from DB import session, conn
 
 
 class log_parser():
@@ -116,7 +116,7 @@ class log_parser():
                     features.append(current_feature)
                     continue
         # 对SQL 确定insert 动作
-        # conn.commit()
+        conn.commit()
         # 刷新整个Srv_feature_info.json
         server_name = current_port + "@" + current_srv
         server_feature_file = 'static/server_info/' + \

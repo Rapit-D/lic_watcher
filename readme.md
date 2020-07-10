@@ -53,7 +53,7 @@ sqlite> .read create.sql
 
 ```bash
 crotab -e
-*/10 * * * * /usr/bin/python3 /var/www/html/functions/info_gether.py
+*/10 * * * * /usr/bin/python3 /var/www/html/functions/info_gather.py
 ```
 5. setup apache or nginx server
 
