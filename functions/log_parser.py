@@ -1,8 +1,8 @@
 import re
 import os
 from datetime import date, time, datetime
-from lic_validator import home_page_schema, srv_features_schema
-from DB import session, conn
+from .lic_validator import home_page_schema, srv_features_schema
+from .DB import session, conn
 
 
 class log_parser():
