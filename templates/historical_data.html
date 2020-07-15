@@ -56,19 +56,6 @@
                 <div class="ui vertical segement">
                     <div id="mychart"></div>
                 </div>
-                <div class="ui form">
-                    <div class="ui vertical basic segment">
-                        <div class="inline basic fields" id="table_srv_info">
-                            <label>Lic Servers:</label>
-                        </div>
-                    </div>
-                    <div class="ui vertical basic segment">
-                    </div>
-                    <div class="ui vertical basic segment">
-                        <h5>Current Usage:</h5>
-                        <div class="ui table celled selectable" id="current_feature_status"></div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -107,44 +94,6 @@
             });
         });
 
-
-    // 根据radio 单选框，查询服务器license 使用情况
-    $("#table_srv_info")
-        .on('click', function () {
-            let applied_data = {
-                srvs: $("#table_srv_info input[name='current_usage']:checked").val()
-            };
-            $.ajax({
-                type: "POST",
-                url: "/get_current_feature_status",
-                data: JSON.stringify(applied_data),
-                success: function (data) {
-                    data = JSON.parse(data);
-                    $("#current_feature_status").empty();
-                    var items = [];
-                    $("#current_feature_status").append("<thead><tr><th>Index</th><th>Feature</th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>license number checked</th></thead>");
-                    $("#current_feature_status").append("<tbody><meta charset = 'uft-8>'");
-                    $.each(data, function (index, value) {
-                        items.push("<tr><td>" + index + "</td>"
-                            + "<td>" + value["feature"] + "</td>"
-                            + "<td>" + value["current_username"] + "</td>"
-                            + "<td>" + value["current_client"] + "</td>"
-                            + "<td>" + value["current_ip_addr"] + "</td>"
-                            + "<td>" + value["start_date"] + "&nbsp;" + value["start_time"] + "</td>"
-                            + "<td>" + value["current_lic_checkedout"] + "</td></tr>"
-                        );
-                    });
-                    items.forEach(function (element) {
-                        $("#current_feature_status").append(element)
-
-                    });
-                    $("#current_feature_status").append("</tbody>")
-                },
-                contentType: "application/json",
-                dataType: "text"
-
-            });
-        });
 
     // calendar selector
     $('#rangestart').calendar({
@@ -229,15 +178,6 @@
             items.forEach(function (element) {
                 $('#srv_info').append(element)
             });
-            $.each(data, function (index, value) {
-                items_1.push("<div class='ui radio checkbox'><input type='radio' name='current_usage' value='" + value['portnumber'] + '@' + value['server'] + "'><label>" + value['portnumber'] + '@' + value['server'] + "</label></div>")
-            })
-
-            // generate bottom table filter servers checkbox
-            items_1.forEach(function (element) {
-                $("#table_srv_info").append("<div class='filed'>" + element + "</div>")
-            });
-            $("#table_srv_info input").first().attr({ checked: "checked" });
         }).done(function () {
             $.ajax({
                 type: "POST",
@@ -271,40 +211,6 @@
                             dataType: "text"
                         })
                     }
-                });
-            }).done(function () {
-                let applied_data = {
-                    srvs: $("#table_srv_info input[name='current_usage']:checked").val()
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "/get_current_feature_status",
-                    data: JSON.stringify(applied_data),
-                    success: function (data) {
-                        data = JSON.parse(data);
-                        $("#current_feature_status").empty();
-                        var items = [];
-                        $("#current_feature_status").append("<thead><tr><th>Index</th><th>Feature</th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>license number checked</th></thead>");
-                        $("#current_feature_status").append("<tbody><meta charset = 'uft-8>'");
-                        $.each(data, function (index, value) {
-                            items.push("<tr><td>" + index + "</td>"
-                                + "<td>" + value["feature"] + "</td>"
-                                + "<td>" + value["current_username"] + "</td>"
-                                + "<td>" + value["current_client"] + "</td>"
-                                + "<td>" + value["current_ip_addr"] + "</td>"
-                                + "<td>" + value["start_date"] + "&nbsp;" + value["start_time"] + "</td>"
-                                + "<td>" + value["current_lic_checkedout"] + "</td></tr>"
-                            );
-                        });
-                        items.forEach(function (element) {
-                            $("#current_feature_status").append(element)
-
-                        });
-                        $("#current_feature_status").append("</tbody>")
-                    },
-                    contentType: "application/json",
-                    dataType: "text"
-
                 });
             });
         });
@@ -378,61 +284,6 @@
         features.forEach(function (element) {
             $('#features_info').append("<div class='ui three wide column'><div class='ui checkbox'><input type='checkbox' name='" + element + "' value='" + element + "'><label>" + element + "</label></div>")
         })
-    }
-
-    // 生成所选服务器此时的使用情况
-    function current_status_table() {
-        let applied_data = {
-            srvs: current_usage_checked_val()
-        };
-        $.ajax({
-            type: "POST",
-            url: "/get_current_feature_status",
-            data: JSON.stringify(applied_data),
-            success: function (data) {
-                data = JSON.parse(data);
-                $("#current_feature_status").empty();
-                var items = [];
-                $("#current_feature_status").append("<thead><tr><th>Number</th><th><Feature></th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>lic num checked out</th></thead>");
-                $("#current_feature_status").append("<tbody><meta charset = 'uft-8>'");
-                $.each(data, function (index, value) {
-                    items.push("<tr><td>" + index + 1 + "</td>"
-                        + "<td>" + value["feature"] + "</td>"
-                        + "<td>" + value["current_username"] + "</td>"
-                        + "<td>" + value["current_client"] + "</td>"
-                        + "<td>" + value["current_ip_addr"] + "</td>"
-                        + "<td>" + value["start_date"] + "&nbsp;" + value["start_time"] + "</td>"
-                        + "<td>" + value["current_lic_checkedout"] + "</td>"
-                    );
-                });
-                items.forEach(function (element) {
-                    $("#current_feature_status").append(elment)
-                });
-                $("#current_feature_status").append("</tbody>")
-            },
-            contentType: "application/json",
-            dataType: "text"
-
-        });
-        // $.getJSON('/get_current_feature_status', function (data) {
-        //     var items = [];
-        //     $("#current_feature_status").append("<thead><tr><th>Number</th><th><Feature></th><th>User</th><th>client</th><th>ip</th><th>start time</th><th>lic num checked out</th></thead>");
-        //     $("#current_feature_status").append("<tbody><meta charset = 'uft-8>'");
-        //     $.each(data, function (index, value) {
-        //         items.push("<tr><td>" + index + 1 + "</td>"
-        //             + "<td>" + value["feature"] + "</td>"
-        //             + "<td>" + value["current_username"] + "</td>"
-        //             + "<td>" + value["current_client"] + "</td>"
-        //             + "<td>" + value["current_ip_addr"] + "</td>"
-        //             + "<td>" + value["start_date"] + "&nbsp;" + value["start_time"] + "</td>"
-        //             + "<td>" + value["current_lic_checkedout"] + "</td>"
-        //         );
-        //     });
-        //     items.forEach(function (element) {
-        //         $("#current_feature_status").append(elment)
-        //     });
-        //     $("#current_feature_status").append("</tbody>")
-        // });
     }
 </script>
 
