@@ -2,7 +2,8 @@ import re
 import os
 from datetime import date, time, datetime
 from .lic_validator import home_page_schema, srv_features_schema
-from .DB import session, conn
+from functions.DB import DB_PATH, dict_factory
+import sqlite3
 
 
 class log_parser():
@@ -18,6 +19,9 @@ class log_parser():
     def __init__(self, log_file, keyword):
         self.file = log_file
         self.keyword = keyword
+        self.conn = sqlite3.connect(DB_PATH)
+        self.conn.row_factory = dict_factory
+        self.session = self.conn.cursor()
 
     def server_info_parser(self):
         # 根据log 文件名生成对应的server 信息
@@ -102,7 +106,7 @@ class log_parser():
                     current_feature = groups.group('feature')
                     current_total_lic = groups.group('total_lic')
                     current_in_use_lic = groups.group('in_use_lic')
-                    session.execute(
+                    self.session.execute(
                         """INSERT INTO
                             lic_usage(server, feature, current_date,
                                       current_time, current_users, total_lic_available)
@@ -116,7 +120,8 @@ class log_parser():
                     features.append(current_feature)
                     continue
         # 对SQL 确定insert 动作
-        conn.commit()
+        self.conn.commit()
+        self.conn.close()
         # 刷新整个Srv_feature_info.json
         server_name = current_port + "@" + current_srv
         server_feature_file = 'static/server_info/' + \

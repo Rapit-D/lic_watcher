@@ -1,9 +1,14 @@
-from .DB import session, conn
+from functions.DB import DB_PATH, dict_factory
 from datetime import date, timedelta, datetime
 import types
+import sqlite3
 
 
 def sql_data(min_date=30, max_date=date.today(), server=['5280@SZ-glblic01', '5280@nl1lic01.vas.goodix.com'], feature=['111']):
+    # init database
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = dict_factory
+    session = conn.cursor()
     # 依次传入查询的最早时间，若不指定则为查询日期的30 天前
     # 传入查询的最晚时间，若不指定则为查询日期的当天
     # 传入查询的server 字段，为列表类型，默认为空值
@@ -36,7 +41,9 @@ def sql_data(min_date=30, max_date=date.today(), server=['5280@SZ-glblic01', '52
         sql_feature = 'and feature in ("' + '","'.join(feature) + '")'
     sql = '{} WHERE {} {} {}'.format(
         sql, ' AND '.join(where), sql_server, sql_feature)
-    return (session.execute(sql, params)).fetchall()
+    result = (session.execute(sql, params)).fetchall()
+    conn.close()
+    return result
 
 
 if __name__ == "__main__":
