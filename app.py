@@ -80,6 +80,11 @@ def srv_features_info():
     return result
 
 
+@app.route("/current_usage", methods={"get"})
+def current_usage():
+    return render_template("current_usage.html")
+
+
 @app.route("/get_current_feature_status", methods={"post"})
 def get_current_feature_status():
     data = request.json
@@ -94,11 +99,6 @@ def get_current_feature_status():
         result.append(item)
     result = current_lic_usage.dumps(result)
     return result
-
-
-@app.route("/test")
-def test():
-    return render_template("test.html")
 
 
 if __name__ == "__main__":
