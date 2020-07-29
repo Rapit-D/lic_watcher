@@ -15,8 +15,11 @@ def info_gether():
     for item in result:
         log_file = current_dir + '/static/server_info/' + \
             str(item['portnumber']) + "@" + item['server'] + '.log'
-        # command = f"lmstat -a -c {item['portnumber']}@{item['server']} > {log_file}"
-        # os.system(command)
+        command = f"/app/lm_tools/lmstat -a -c {item['portnumber']}@{item['server']} > {log_file}"
+        os.system(command)
         parser = log_parser(log_file, 'Users')
         parser.log_parser()
         parser.user_checked_info()
+
+if __name__ == "__main__":
+    info_gether()

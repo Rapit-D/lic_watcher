@@ -87,6 +87,126 @@ crotab -e
 ```
 5. 配置apache 或nginx 服务器
 
+# Docker Deployment
+1. Install latest docker on your server.
+2. Create two volumes to store sqlite database and license server infomation.
+
+```bash
+# Create two docker volume
+docker volume create sqlite_db
+docker volume create srv_info
+```
+3. Check the mountpoint of sqlite_db, and create database inside it.
+```bash
+# check the mountpoint of sqlite_db
+docker volume inspect sqlite_db
+
+# create database file under sqlite_db
+touch $MOUNTPINT/lic.db
+
+# open created database file
+sqlite3 $MOUNTPOINT/lic.db
+
+# create tables needed
+CREATE TABLE lic_usage(
+id integer PRIMARY KEY autoincrement,
+server varchar(100),
+feature varchar(100),
+current_date DATE,
+current_time TIME,
+current_users integer,
+total_lic_available integer
+);
+```
+4. 同上检查docker Volume srv_info 的MOUNTPOINT 创建所需文件
+```bash
+# check the mountpoint of srv_info
+docker volume inspect srv_info
+
+# create a json file under it to store license servers infomation
+touch $MOUNTPOINT/home_page.json
+
+# open created json file and add "[]" inside
+vim $MOUNTPOINT/home_page.json
+[]
+
+```
+5. Pull Image
+```bash
+docker pull rayding62/lic_watcher:version1.2
+```
+
+6. Run Docker
+
+```bash
+docker -p 80:5000 --name flask -v sqlite_db:/app/db/ \
+-v srv_info:/app/static/server_info/ \
+rayding62:lic_watcher:version1.2 \
+sh -c "python app.py"
+```
+
+
+
+# Docker 部署
+
+1. 安装新版docker 到服务器
+2. 创建两个volume 分别用来存储sqlite 数据库和需要监控的服务器信息
+
+```bash
+# 创建两个docker volume
+docker volume create sqlite_db
+docker volume create srv_info
+```
+3. 检查创建的sqlite_db volume 在服务器中的存储为之，查看其中的Mountpoint 值
+```bash
+# 检查sqlite_db 在服务器中的存储目录
+docker volume inspect sqlite_db
+
+# 在该Volume 的目录下创建数据库文件
+touch $MOUNTPINT/lic.db
+
+# 打开数据库文件
+sqlite3 $MOUNTPOINT/lic.db
+
+# 创建应用所需表
+CREATE TABLE lic_usage(
+id integer PRIMARY KEY autoincrement,
+server varchar(100),
+feature varchar(100),
+current_date DATE,
+current_time TIME,
+current_users integer,
+total_lic_available integer
+);
+```
+4. 同上检查docker Volume srv_info 的MOUNTPOINT 创建所需文件
+```bash
+# 检查srv_info 在服务器中的存储目录
+docker volume inspect srv_info
+
+# 在该Volume 下创建服务器存储信息的json 文件
+touch $MOUNTPOINT/home_page.json
+
+# 打开home_page.json 添加"[]"并保存
+vim $MOUNTPOINT/home_page.json
+[]
+
+```
+5. 下载image
+```bash
+docker pull rayding62/lic_watcher:version1.2
+```
+
+6. 开始运行容器
+
+```bash
+docker -p 80:5000 --name flask -v sqlite_db:/app/db/ \
+-v srv_info:/app/static/server_info/ \
+rayding62:lic_watcher:version1.2 \
+sh -c "python app.py"
+```
+
+
 # Example details/ 样例截图
 
 ## 1. Add New Server/ 添加新的license 服务器
