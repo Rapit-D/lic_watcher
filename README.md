@@ -139,7 +139,7 @@ docker pull rayding62/lic_watcher:version1.2
 6. Run Docker
 
 ```bash
-docker -p 80:5000 --name flask -v sqlite_db:/app/db/ \
+docker run -p 80:5000 --name flask -v sqlite_db:/app/db/ \
 -v srv_info:/app/static/server_info/ \
 rayding62:lic_watcher:version1.2 \
 sh -c "python app.py"
@@ -200,7 +200,7 @@ docker pull rayding62/lic_watcher:version1.2
 6. 开始运行容器
 
 ```bash
-docker -p 80:5000 --name flask -v sqlite_db:/app/db/ \
+docker run -p 80:5000 --name flask -v sqlite_db:/app/db/ \
 -v srv_info:/app/static/server_info/ \
 rayding62:lic_watcher:version1.2 \
 sh -c "python app.py"
@@ -225,6 +225,6 @@ Click right side Servers checkbox can be generate following Features checkbox au
 
 ![Alt History Data Chart](./examples/Xnip2020-07-10_21-50-41.png)
 
-# 4. Current Lic Usage Display/ 当前许可使用展示
+## 4. Current Lic Usage Display/ 当前许可使用展示
 
 ![Alt Current Lic Usage](./examples/Xnip2020-07-10_21-54-33.png)
